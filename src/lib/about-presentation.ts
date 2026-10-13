@@ -41,7 +41,7 @@ export function aboutPresentation(page: string, original: string): string {
   }
   if (page === "halal-certificates") {
     const certs = [certOne, certTwo, certThree, certFour, certFive];
-    return original.replace(/lifeos-media:\/\/recognition\/3([3-7])/g, (_, n) => certs[Number(n) - 3]).replace(/class="img-fluid"/g, 'class="img-fluid lifeos-certificate"');
+    return original.replace(/lifeos-media:\/\/recognition\/3([3-7])/g, (_, n) => certs[Number(n) - 3] ?? "").replace(/class="img-fluid"/g, 'class="img-fluid lifeos-certificate"');
   }
   return original;
 }
