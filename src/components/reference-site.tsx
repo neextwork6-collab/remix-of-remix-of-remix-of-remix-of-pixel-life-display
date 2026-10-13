@@ -67,7 +67,7 @@ function ReferenceMarkup({ html, header = false, plain = false }: { html: string
   const [expanded, setExpanded] = useState("accordion1-card-body-bprghjla");
   const [notice, setNotice] = useState<string>();
   useEffect(() => {
-    if (!notice) return;
+    if (!notice) { setBrandedNotice(false); return; }
     const close = (event: KeyboardEvent) => { if (event.key === "Escape") setNotice(undefined); };
     const previous = document.body.style.overflow;
     document.body.style.overflow = "hidden";
