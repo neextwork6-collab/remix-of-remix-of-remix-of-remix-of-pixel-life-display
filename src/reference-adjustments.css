@@ -181,7 +181,7 @@
 .lifeos-photo{position:relative;display:block;width:100%;padding:0;border:0;background:transparent;overflow:hidden;line-height:0}
 .lifeos-photo-action{cursor:zoom-in}
 .reference-site .lifeos-photo>.lifeos-photo-image{display:block;width:100%;height:auto;object-fit:cover}
-.reference-site .lifeos-photo>.lifeos-photo-logo{position:absolute;top:4%;right:4%;width:24%;max-width:180px;height:auto;aspect-ratio:auto;object-fit:contain;pointer-events:none;z-index:2;filter:drop-shadow(0 1px 2px var(--reference-tone-79))}
+.reference-site.reference-site .lifeos-photo>img.lifeos-photo-logo{margin:0;position:absolute;top:4%;right:4%;width:24%;max-width:180px;height:auto;aspect-ratio:auto;object-fit:contain;pointer-events:none;z-index:2;filter:drop-shadow(0 1px 2px var(--reference-tone-79))}
 .lifeos-photo-action:focus-visible{outline:3px solid var(--primary);outline-offset:3px}
 .reference-site .lifeos-photo-viewer>.lifeos-photo-image{max-height:82vh;object-fit:contain}
 .reference-site .reference-modal-body{position:relative;padding:44px 16px 16px;width:min(100%,1000px)}
