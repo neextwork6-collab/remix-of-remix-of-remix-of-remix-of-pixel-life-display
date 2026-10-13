@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as AudioGalleryRouteImport } from './routes/audio-gallery'
 import { Route as AwardsRouteImport } from './routes/awards'
 import { Route as BusinessCenterRouteImport } from './routes/business-center'
 import { Route as BusinessCollaborationRouteImport } from './routes/business-collaboration'
@@ -44,6 +45,11 @@ const IndexRoute = IndexRouteImport.update({
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AudioGalleryRoute = AudioGalleryRouteImport.update({
+  id: '/audio-gallery',
+  path: '/audio-gallery',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AwardsRoute = AwardsRouteImport.update({
@@ -170,6 +176,7 @@ const ServicesSlugRoute = ServicesSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/audio-gallery': typeof AudioGalleryRoute
   '/awards': typeof AwardsRoute
   '/business-center': typeof BusinessCenterRoute
   '/business-collaboration': typeof BusinessCollaborationRoute
@@ -198,6 +205,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/audio-gallery': typeof AudioGalleryRoute
   '/awards': typeof AwardsRoute
   '/business-center': typeof BusinessCenterRoute
   '/business-collaboration': typeof BusinessCollaborationRoute
@@ -227,6 +235,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/audio-gallery': typeof AudioGalleryRoute
   '/awards': typeof AwardsRoute
   '/business-center': typeof BusinessCenterRoute
   '/business-collaboration': typeof BusinessCollaborationRoute
@@ -257,6 +266,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/audio-gallery'
     | '/awards'
     | '/business-center'
     | '/business-collaboration'
@@ -285,6 +295,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/audio-gallery'
     | '/awards'
     | '/business-center'
     | '/business-collaboration'
@@ -313,6 +324,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/audio-gallery'
     | '/awards'
     | '/business-center'
     | '/business-collaboration'
@@ -342,6 +354,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AudioGalleryRoute: typeof AudioGalleryRoute
   AwardsRoute: typeof AwardsRoute
   BusinessCenterRoute: typeof BusinessCenterRoute
   BusinessCollaborationRoute: typeof BusinessCollaborationRoute
@@ -382,6 +395,13 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/audio-gallery': {
+      id: '/audio-gallery'
+      path: '/audio-gallery'
+      fullPath: '/audio-gallery'
+      preLoaderRoute: typeof AudioGalleryRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/awards': {
@@ -558,6 +578,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AudioGalleryRoute: AudioGalleryRoute,
   AwardsRoute: AwardsRoute,
   BusinessCenterRoute: BusinessCenterRoute,
   BusinessCollaborationRoute: BusinessCollaborationRoute,
