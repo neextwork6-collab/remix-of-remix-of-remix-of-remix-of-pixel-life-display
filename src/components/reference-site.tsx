@@ -1,4 +1,5 @@
 import logoPointer from "@/assets/life-os-logo.png.asset.json";
+import introVideo from "@/assets/lifeos-logo-intro.mp4.asset.json";
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import parse, { attributesToProps, domToReact, Element, type DOMNode, type HTMLReactParserOptions } from "html-react-parser";
@@ -52,6 +53,14 @@ function CompactCollection({ node, options, limit }: { node: Element; options: H
   return <><Tag id={id} className={node.attribs["class"]}>{domToReact((all ? groups : groups.slice(0, limit)).flat(), options)}</Tag>{groups.length > limit && <div className="reference-collection-control"><Button variant="reference" size="reference" className="button button-primary" aria-expanded={all} onClick={() => setAll(!all)}>{all ? "Show less" : `View all (${groups.length})`}</Button></div>}</>;
 }
 
+// Each video keeps its own banner as poster; every play loads the shared 5s Life OS logo clip.
+function PosterVideo({ poster, alt }: { poster: string; alt: string }) {
+  const [playing, setPlaying] = useState(false);
+  if (playing) return <video className="lifeos-video" src={introVideo.url} poster={poster} autoPlay controls playsInline onEnded={() => setPlaying(false)} aria-label={alt} />;
+  return <Button variant="reference" size="reference" className="lifeos-video-poster" aria-label={`Play ${alt}`} onClick={() => setPlaying(true)}><img className="reference-video-poster" src={poster} alt={alt} loading="lazy" decoding="async" /><span className="lifeos-video-play" aria-hidden="true" /></Button>;
+}
+
+
 function BrandedPhoto({ src, alt, viewer = false, onOpen, className = "" }: { src: string; alt: string; viewer?: boolean; onOpen?: () => void; className?: string }) {
   const image = <><img className={`lifeos-photo-image ${viewer ? "" : className.replace("img-responsive", "")}`.trim()} src={src} alt={alt} loading="eager" decoding="async" /><img className="lifeos-photo-logo" src={logoPointer.url} alt="Life OS" aria-hidden="true" /></>;
   return viewer ? <span className="lifeos-photo lifeos-photo-viewer">{image}</span> : <Button variant="reference" size="reference" className="lifeos-photo lifeos-photo-action" aria-label={`View ${alt}`} onClick={event => { event.preventDefault(); event.stopPropagation(); onOpen?.(); }}>{image}</Button>;
@@ -89,6 +98,7 @@ function ReferenceMarkup({ html, header = false, plain = false }: { html: string
       if (node.name === "img") {
         const imageSrc = attrs["src"];
         if (imageSrc && branded(imageSrc, cls)) return <BrandedPhoto src={imageSrc} alt={attrs["alt"] ?? "Life OS photo"} className={cls} onOpen={() => { setBrandedNotice(true); setNotice(imageSrc); }} />;
+        if (imageSrc && cls.includes("reference-video-poster")) return <PosterVideo poster={imageSrc} alt={attrs["alt"] ?? "Life OS video"} />;
         const service = /\/service-\d{2}[.-]/.test(attrs["src"] ?? "");
         const px = (v?: string) => v && /^\d+$/.test(v) ? Number(v) : undefined;
         return <img {...attributesToProps(attrs)} className={`${cls}${service ? " reference-service-image" : ""}`} width={service ? 1920 : px(attrs["width"])} height={service ? 1080 : px(attrs["height"])} alt={attrs["alt"] ?? ""} loading="lazy" decoding="async" />;
