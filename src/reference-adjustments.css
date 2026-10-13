@@ -1,4 +1,38 @@
 .reference-site{overflow:hidden;letter-spacing:0}
+.lifeos-about-page #profile{padding:44px 0 52px}
+.lifeos-about-page #profile .container{min-width:0}
+.lifeos-about-page #profile [class*="col-"]{min-width:0}
+.lifeos-about-page #profile h1,.lifeos-about-page #profile h2,.lifeos-about-page #profile h3,.lifeos-about-page #profile h4,.lifeos-about-page #profile h5,.lifeos-about-page #profile h6,.lifeos-about-page #profile p,.lifeos-about-page #profile li{overflow-wrap:anywhere;letter-spacing:0}
+.lifeos-about-page #profile h2{font-size:32px;line-height:1.5;color:var(--primary)}
+.lifeos-about-page #profile h1.page-title{font-size:22px;line-height:1.65;max-width:42ch;margin:0 auto 32px}
+.lifeos-about-page #profile[lang="bn"],.lifeos-about-page #profile[lang="bn"] :is(h1,h2,h3,h4,h5,h6,p,li,figcaption,a){font-family:"Noto Sans Bengali",Lato,sans-serif}
+.lifeos-about-page #profile p{font-size:16px;line-height:1.95;text-align:left}
+.lifeos-about-page #profile h5{font-size:24px;line-height:1.6;color:var(--primary);margin:0 0 8px}
+.lifeos-about-page #profile h6{font-size:15px;font-weight:500;line-height:1.8;margin:0 0 20px}
+.lifeos-about-page #profile .lifeos-section-intro{max-width:76ch;margin:0 auto 40px}
+.lifeos-about-page #profile .row:has(>.col-sm-6){align-items:center;row-gap:24px}
+.lifeos-about-page #profile .img-responsive{display:block;width:100%;height:auto;max-width:100%;object-fit:contain}
+.lifeos-about-page #profile .lifeos-profile-row{align-items:center;margin:40px 0 0;gap:32px;display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);padding-bottom:40px;border-bottom:1px solid var(--border)}
+.lifeos-about-page #profile .lifeos-profile-row:last-child{border:0;padding-bottom:0}
+.lifeos-about-page #profile .lifeos-profile-row>[class*="col-"]{width:auto;max-width:none;padding:0}
+.lifeos-about-page #profile .lifeos-portrait{aspect-ratio:3/4;object-fit:cover;object-position:center 25%;border-radius:4px}
+.lifeos-about-page #profile figcaption{font-size:12px;line-height:1.8;margin-top:8px;color:var(--muted-foreground)}
+.lifeos-about-page #profile figure{margin:0}
+.lifeos-about-page #profile .lifeos-collaboration-row{align-items:center;row-gap:24px;margin-top:40px}
+.lifeos-about-page #profile .lifeos-collaboration-row+.lifeos-collaboration-row{border-top:1px solid var(--border);padding-top:40px}
+.lifeos-about-page #profile .lifeos-collaboration-image{aspect-ratio:5/4;object-fit:cover;border-radius:4px}
+.lifeos-about-page #profile .lifeos-opportunity-intro{max-width:80ch;margin:0 auto 28px}
+.lifeos-about-page #profile .lifeos-opportunity-intro h3{font-size:22px;line-height:1.7;color:var(--primary)}
+.lifeos-about-page #profile .lifeos-opportunity-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 32px;list-style:none;padding:24px 0;margin:0 0 28px;border-block:1px solid var(--border)}
+.lifeos-about-page #profile .lifeos-opportunity-list li{display:flex;gap:12px;font-size:16px;line-height:1.9}
+.lifeos-about-page #profile .lifeos-opportunity-list li::before{content:"✓";flex:none;color:var(--primary);font-weight:700}
+.lifeos-about-page #profile .lifeos-opportunity-steps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:40px;margin:36px 0}
+.lifeos-about-page #profile .lifeos-opportunity-steps h4{font-size:21px;line-height:1.8;color:var(--primary)}
+.lifeos-about-page #profile .lifeos-opportunity-steps h4 span{display:block;font-size:18px;margin-bottom:10px;color:var(--secondary)}
+.lifeos-about-page #profile .lifeos-opportunity-note{font-size:14px;border-left:2px solid var(--primary);padding-left:18px}
+.lifeos-about-page #profile .lifeos-opportunity-contact{margin-top:28px}
+.lifeos-about-page #profile .lifeos-opportunity-contact .button{min-height:44px;white-space:normal}
+@media(max-width:767px){.lifeos-about-page #profile{padding:28px 0 36px}.lifeos-about-page #profile h2{font-size:26px}.lifeos-about-page #profile h1.page-title{font-size:19px;margin-bottom:24px}.lifeos-about-page #profile h5{font-size:22px}.lifeos-about-page #profile .lifeos-profile-row{grid-template-columns:minmax(0,1fr);gap:20px;margin-top:28px;padding-bottom:28px}.lifeos-about-page #profile .lifeos-profile-row figure{max-width:340px;width:100%;margin:auto}.lifeos-about-page #profile .lifeos-opportunity-list,.lifeos-about-page #profile .lifeos-opportunity-steps{grid-template-columns:minmax(0,1fr);gap:20px}.lifeos-about-page #profile .lifeos-collaboration-reverse{flex-direction:column-reverse}.lifeos-about-page #profile .lifeos-collaboration-row{margin-top:28px}.lifeos-about-page #profile .hr-short{margin:32px auto}.lifeos-about-page #profile .lifeos-section-intro{margin-bottom:24px}}
 .reference-banner{position:relative;aspect-ratio:1584/672;height:auto;background:var(--background);overflow:hidden}
 .reference-banner>img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
 .reference-pagination{position:absolute;right:3%;bottom:24px;display:flex;gap:16px}
