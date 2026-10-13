@@ -84,7 +84,8 @@ function ReferenceMarkup({ html, header = false }: { html: string; header?: bool
       const limit = header ? undefined : collectionLimit(node);
       if (limit && collectionGroups(node).length > limit) return <CompactCollection node={node} options={options} limit={limit} />;
       if (node.name === "img") {
-        if (/tile-events-/.test(attrs["src"] ?? "")) return <BrandedPhoto src={attrs["src"]} alt={attrs["alt"] ?? "Life OS event"} onOpen={() => setNotice(attrs["src"])} />;
+        const imageSrc = attrs["src"];
+        if (imageSrc && /tile-events-/.test(imageSrc)) return <BrandedPhoto src={imageSrc} alt={attrs["alt"] ?? "Life OS event"} onOpen={() => setNotice(imageSrc)} />;
         const service = /\/service-\d{2}[.-]/.test(attrs["src"] ?? "");
         const px = (v?: string) => v && /^\d+$/.test(v) ? Number(v) : undefined;
         return <img {...attributesToProps(attrs)} className={`${cls}${service ? " reference-service-image" : ""}`} width={service ? 1920 : px(attrs["width"])} height={service ? 1080 : px(attrs["height"])} alt={attrs["alt"] ?? ""} loading="lazy" decoding="async" />;
