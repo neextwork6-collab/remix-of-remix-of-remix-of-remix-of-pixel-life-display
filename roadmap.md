@@ -8,6 +8,13 @@
 # About and business presentation
 - [ ] Add two illustrative senior-management profiles and matching portraits.
 - [ ] Replace three expert images and two business-collaboration images.
-- [ ] Repair corrupted business-opportunity text and present it in Bengali.
+- [x] Repair corrupted business-opportunity text; keep website content in English.
 - [ ] Improve all About subsection layouts across device sizes without changing the theme.
 - [ ] Verify updated pages and existing outstanding photo/background tasks.
+
+# Services, galleries and support
+- [ ] Refine all service submenu layouts for phones, tablets and desktops.
+- [ ] Improve photo/video galleries and add an audio gallery with generated Life OS BD narration.
+- [ ] Refine FAQ, Contact Us and Join Us presentation and English content.
+- [ ] Generate suitable branded Contact Us and Join Us photographs.
+- [ ] Verify requested pages, media controls and responsive layouts.

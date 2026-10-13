@@ -1,5 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { ReferenceSite } from "@/components/reference-site";
+import { BrandedPhoto, ReferenceSite } from "@/components/reference-site";
+import { Button } from "@/components/ui/button";
 import { findServicePage, heroImage, servicePages, tileImage } from "@/lib/service-pages";
 
 export const Route = createFileRoute("/services/$slug")({
@@ -20,7 +21,7 @@ function ServiceDetail() {
     <ReferenceSite page="crystal-cell" content={
       <>
         <div className="product-banner service-page-hero">
-          <img src={heroImage(s.slug)} alt={`${s.title} with Life OS`} width={1920} height={1088} className="img-responsive" />
+          <BrandedPhoto src={heroImage(s.slug) ?? ""} alt={`${s.title} with Life OS`} />
         </div>
         <section id="product" className="service-page">
           <div className="container">
@@ -29,15 +30,15 @@ function ServiceDetail() {
                 <h2 className="product-heading">{s.title}</h2>
                 <h1 className="page-title service-page-tagline">{s.tagline}</h1>
                 <p className="service-page-intro">{s.intro}</p>
-                <Link to="/join-us" className="btn btn-knowme">Get Started</Link>
+                <Button variant="reference" size="reference" asChild><Link to="/join-us" className="btn btn-knowme">Get Started</Link></Button>
               </div>
-              <div className="col-md-6"><img src={tileImage(s.tiles[0] ?? 1)} alt={`${s.title} service`} width={1920} height={1080} loading="lazy" className="img-responsive reference-service-image" /></div>
+              <div className="col-md-6"><BrandedPhoto src={tileImage(s.tiles[0] ?? 1) ?? ""} alt={`${s.title} service`} className="reference-service-image" /></div>
             </div>
             <h3 className="product-heading mt-3">Key Features</h3>
             <div className="row service-page-features">
               {s.features.map(([name, text], i) => (
                 <div className="col-sm-4" key={name}>
-                  <img src={tileImage(s.tiles[i] ?? 1)} alt={name} width={1920} height={1080} loading="lazy" className="img-responsive reference-service-image" />
+                  <BrandedPhoto src={tileImage(s.tiles[i] ?? 1) ?? ""} alt={name} className="reference-service-image" />
                   <h4 className="product-ingredient">{name}</h4>
                   <p>{text}</p>
                 </div>
@@ -50,7 +51,7 @@ function ServiceDetail() {
               {related.map(r => (
                 <div className="col-sm-3" key={r.slug}>
                   <Link to="/services/$slug" params={{ slug: r.slug }}>
-                    <img src={heroImage(r.slug)} alt={r.title} width={1920} height={1088} loading="lazy" className="img-responsive" />
+                    <BrandedPhoto src={heroImage(r.slug) ?? ""} alt={r.title} />
                     <span>{r.title}</span>
                   </Link>
                 </div>

@@ -252,3 +252,71 @@
 .lifeos-video-poster::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(to top, color-mix(in oklab, var(--foreground) 35%, transparent), transparent 60%); }
 .lifeos-video-play { z-index: 2; width: 42px; height: 42px; border: 2px solid var(--primary-foreground); }
 .lifeos-video-play::after { border-width: 7px 0 7px 12px; }
+
+/* Services and support retain the imported palette and typography. */
+.reference-site .service-page{padding:40px 0 52px}
+.reference-site .service-page-hero .lifeos-photo{aspect-ratio:1920/1088}
+.reference-site .service-page-hero .lifeos-photo-image{height:100%;object-fit:cover}
+.reference-site .service-page .row{row-gap:24px;align-items:start}
+.reference-site .service-page [class*="col-"]{min-width:0}
+.reference-site .service-page :is(h1,h2,h3,h4,p,li,a){overflow-wrap:anywhere;letter-spacing:0}
+.reference-site .service-page .product-heading{font-size:28px;line-height:1.3}
+.reference-site .service-page .service-page-tagline{font-size:20px;line-height:1.5;margin:16px 0}
+.reference-site .service-page p{font-size:15px;line-height:1.8}
+.reference-site .service-page-features{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin:24px 0 36px}
+.reference-site .service-page-features>div{width:auto;max-width:none;padding:0;border-bottom:2px solid var(--border)}
+.reference-site .service-page-features h4{font-size:19px;margin:18px 0 10px}
+.reference-site .service-page .lifeos-photo{border-radius:4px}
+.reference-site .service-page-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;list-style:none;counter-reset:service-step;padding:0;margin:24px 0 40px}
+.reference-site .service-page-steps li{counter-increment:service-step;border-top:2px solid var(--primary);padding:16px 0;line-height:1.7}
+.reference-site .service-page-steps li::before{content:counter(service-step,decimal-leading-zero);display:block;color:var(--primary);font-size:24px;margin-bottom:12px}
+.reference-site .service-page-related{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;margin:24px 0 0}
+.reference-site .service-page-related>div{width:auto;max-width:none;padding:0}
+.reference-site .service-page-related a>span:last-child{display:block;padding-top:12px;line-height:1.5}
+.reference-site .lifeos-support{padding:40px 0 52px}
+.reference-site .lifeos-support .panel-group{max-width:900px;margin:28px auto 0}
+.lifeos-faq{border-bottom:1px solid var(--border);padding:0;background:var(--background)}
+.lifeos-faq summary{position:relative;list-style:none;padding:22px 44px 22px 0;font:700 18px/1.5 Lato,sans-serif;color:var(--primary);cursor:pointer;overflow-wrap:anywhere}
+.lifeos-faq summary::-webkit-details-marker{display:none}
+.lifeos-faq summary::after{content:"+";position:absolute;right:4px;top:20px;font-size:24px}
+.lifeos-faq[open] summary::after{content:"−"}
+.reference-site .lifeos-faq .panel-body{padding:0 32px 22px 0;font-size:15px;line-height:1.8}
+.lifeos-faq summary:focus-visible{outline:2px solid var(--primary);outline-offset:3px}
+.reference-site:is(.reference-contact,.reference-join-us) #contact{padding:40px 0 52px}
+.reference-site:is(.reference-contact,.reference-join-us) #contact :is(h2,h3,p,label,a){overflow-wrap:anywhere;letter-spacing:0}
+.reference-site:is(.reference-contact,.reference-join-us) #contact [class*="col-"]{min-width:0}
+.reference-site:is(.reference-contact,.reference-join-us) #contact .row{row-gap:20px}
+.reference-site:is(.reference-contact,.reference-join-us) #contact .form-control{min-height:46px;height:auto;font-size:16px;line-height:1.5;border-radius:4px}
+.reference-site:is(.reference-contact,.reference-join-us) #contact textarea{min-height:150px}
+.reference-site:is(.reference-contact,.reference-join-us) .contact-form-inner{max-width:800px;margin:28px auto 0}
+.reference-site .lifeos-support-photo{aspect-ratio:3/2;object-fit:cover}
+.reference-contact #contact .info>div{display:flex;align-items:flex-start;gap:16px;padding:12px 0}
+.reference-contact #contact .info i{position:static;flex:none;width:24px;font-size:22px;color:var(--primary);padding-top:5px}
+.reference-contact #contact .info p{margin:0;line-height:1.8}
+.reference-site .lifeos-join-intro{max-width:800px;margin:24px auto 32px;display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center}
+.reference-site .lifeos-join-intro p{font-size:17px;line-height:1.8}
+.reference-join-us #contact .registerForm2 h3{font:700 20px/1.5 Lato,sans-serif;color:var(--primary);border-bottom:1px solid var(--border);padding:18px 0;margin:12px 0 24px}
+.reference-join-us #contact .registerForm2 .form-group.row{row-gap:8px}
+.reference-join-us #contact .registerForm2 label{line-height:1.5}
+.reference-join-us #contact input[name="captcha_no"]{display:block;width:100%;min-height:46px;border:1px solid var(--border);padding:10px;font-size:16px}
+.reference-join-us .captcha-text{font-family:Lato,sans-serif;font-size:26px;color:var(--primary);letter-spacing:0;font-style:normal}
+.lifeos-captcha-refresh{min-width:44px;min-height:44px;font-size:24px;color:var(--primary)}
+.lifeos-form-message{padding:16px 0;line-height:1.7;color:var(--primary)}
+.reference-site .lifeos-video-poster img.lifeos-video-logo{position:absolute;top:5%;right:4%;width:24%;max-width:150px;height:auto;object-fit:contain;z-index:2}
+.reference-video-gallery #myTab{display:flex;flex-wrap:wrap;gap:4px 12px;padding:0;justify-content:center;margin:24px 0}
+.reference-video-gallery #myTab .nav-link{font-size:14px;line-height:1.5;min-height:44px;white-space:normal;padding:10px 14px}
+.reference-video-gallery #myTabContent .row>div,.pvideo>div{border-radius:8px;background:var(--background);box-shadow:none}
+.reference-photo-gallery #profile{padding:40px 0 52px}
+.reference-photo-gallery .cbp-caption .lifeos-photo{aspect-ratio:4/3}
+.reference-photo-gallery .cbp-caption .lifeos-photo-image{height:100%;object-fit:cover}
+.reference-photo-gallery .cbp-caption .lifeos-photo-logo{aspect-ratio:auto;object-fit:contain}
+.reference-photo-gallery .cbp-caption-activeWrap{pointer-events:none}
+.reference-site .lifeos-audio-gallery{padding:40px 0 52px}
+.lifeos-audio-track{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:32px;max-width:960px;margin:32px auto 0;align-items:center}
+.reference-site .lifeos-audio-details h3{font-size:24px;line-height:1.4;margin:12px 0;color:var(--primary)}
+.lifeos-audio-details p{line-height:1.8}
+.lifeos-audio-meta{font-size:12px;color:var(--primary)}
+.lifeos-audio-track audio{width:100%;min-width:0;display:block;margin-top:24px}
+@media(max-width:991px){.reference-site .service-page-related{grid-template-columns:repeat(2,minmax(0,1fr))}.reference-photo-gallery #grid-container>ul{grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}}
+@media(max-width:767px){.reference-site .service-page-features,.reference-site .service-page-steps{grid-template-columns:1fr}.reference-site .service-page .product-heading{font-size:24px}.reference-site .service-page-related{gap:20px 16px}.reference-site .lifeos-join-intro,.lifeos-audio-track{grid-template-columns:1fr;gap:20px}.reference-photo-gallery #grid-container>ul{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 16px}.reference-contact #contact>.container>.col-lg-12,.reference-join-us #contact .col-lg-12{padding-left:0;padding-right:0}.reference-site:is(.reference-contact,.reference-join-us) #contact h2{font-size:28px}.reference-site .lifeos-faq summary{font-size:16px}.reference-site .reference-modal{padding:12px}}
+@media(max-width:479px){.reference-photo-gallery #grid-container>ul{grid-template-columns:1fr}.reference-site .service-page-related{grid-template-columns:1fr}.reference-video-gallery #myTab .nav-item{flex:1 1 100%}.reference-video-gallery #myTab .nav-link{width:100%;text-align:left}}
