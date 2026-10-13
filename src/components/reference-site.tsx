@@ -8,6 +8,7 @@ import reference from "@/lib/reference-pages.json";
 import { collectionLimit, collectionGroups } from "@/lib/content-density";
 import { serviceImage } from "@/lib/service-media";
 import { aboutPresentation } from "@/lib/about-presentation";
+import { supportPresentation } from "@/lib/support-presentation";
 import bannerOnePointer from "@/assets/imported/src/assets/refined/banner-1.jpg.asset.json";
 const bannerOne = bannerOnePointer.url;
 import bannerTwoPointer from "@/assets/imported/src/assets/refined/banner-2.jpg.asset.json";
@@ -41,7 +42,12 @@ export type ReferencePage = keyof typeof reference.pages;
 const localPages = { index: "/", "page?about": "/about", "page?about-founder": "/founder", "page?about-senior-management": "/senior-management", "page?about-management": "/scientists", "page?about-business-collaboration": "/business-collaboration", "page?about-business-opportunity": "/business-opportunity", "page?about-award": "/awards", "page?about-milestones": "/milestones", "page?p-triple-stemcell-h2o-moisturizer": "/triple-stemcell-h2o", "page?p-double-stemcell": "/double-stemcell", "page?p-crystal-cell": "/crystal-cell", "page?p-videos": "/product-videos", "page?p-certificate": "/halal-certificates", "page?p-halal": "/halal-certificates", "page?halal-certificates": "/halal-certificates", "page?photo-gallery": "/photo-gallery", "page?video-gallery": "/video-gallery", "page?events": "/news-events", "page?event-upcoming": "/latest-event", "page?faq-general": "/faq-general", "page?faq-product": "/faq-product", "page?faq-good-policy": "/faq-return-goods", "page?contact": "/contact", "page?contact-business-center": "/business-center", "page?join-us": "/join-us", "https://app.iphyto.com/member/login.aspx": "/login" } as const;
 
 export function pageHead(page: ReferencePage) {
-  const { title, description } = reference.pages[page];
+  const overrides: Partial<Record<ReferencePage, [string, string]>> = {
+    "faq-general": ["General FAQ | Life OS BD", "Answers to common Life OS account, support and registration questions."],
+    "faq-product": ["Services FAQ | Life OS BD", "Explore Life OS service availability, digital identity and support."],
+    "faq-return-goods": ["Returns & Refunds FAQ | Life OS BD", "Guidance on reporting order issues and requesting returns or refunds."],
+  };
+  const [title, description] = overrides[page] ?? [reference.pages[page].title, reference.pages[page].description];
   return { meta: [{ title }, { name: "description", content: description }, { property: "og:title", content: title }, { property: "og:description", content: description }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" }] };
 }
 
@@ -57,13 +63,13 @@ function CompactCollection({ node, options, limit }: { node: Element; options: H
 function PosterVideo({ poster, alt }: { poster: string; alt: string }) {
   const [playing, setPlaying] = useState(false);
   if (playing) return <video className="lifeos-video" src={introVideo.url} poster={poster} autoPlay controls playsInline onEnded={() => setPlaying(false)} aria-label={alt} />;
-  return <Button variant="reference" size="reference" className="lifeos-video-poster" aria-label={`Play ${alt}`} onClick={() => setPlaying(true)}><img className="reference-video-poster" src={poster} alt={alt} loading="lazy" decoding="async" /><span className="lifeos-video-play" aria-hidden="true" /></Button>;
+  return <Button variant="reference" size="reference" className="lifeos-video-poster" aria-label={`Play ${alt}`} onClick={() => setPlaying(true)}><img className="reference-video-poster" src={poster} alt={alt} loading="lazy" decoding="async" /><img className="lifeos-video-logo" src={logoPointer.url} alt="" aria-hidden="true" /><span className="lifeos-video-play" aria-hidden="true" /></Button>;
 }
 
 
-function BrandedPhoto({ src, alt, viewer = false, onOpen, className = "" }: { src: string; alt: string; viewer?: boolean; onOpen?: () => void; className?: string }) {
+export function BrandedPhoto({ src, alt, viewer = false, onOpen, className = "" }: { src: string; alt: string; viewer?: boolean; onOpen?: () => void; className?: string }) {
   const image = <><img className={`lifeos-photo-image ${viewer ? "" : className.replace("img-responsive", "")}`.trim()} src={src} alt={alt} loading="eager" decoding="async" /><img className="lifeos-photo-logo" src={logoPointer.url} alt="Life OS" aria-hidden="true" /></>;
-  return viewer ? <span className="lifeos-photo lifeos-photo-viewer">{image}</span> : <Button variant="reference" size="reference" className="lifeos-photo lifeos-photo-action" aria-label={`View ${alt}`} onClick={event => { event.preventDefault(); event.stopPropagation(); onOpen?.(); }}>{image}</Button>;
+  return viewer ? <span className="lifeos-photo lifeos-photo-viewer">{image}</span> : !onOpen ? <span className="lifeos-photo">{image}</span> : <Button variant="reference" size="reference" className="lifeos-photo lifeos-photo-action" aria-label={`View ${alt}`} onClick={event => { event.preventDefault(); event.stopPropagation(); onOpen(); }}>{image}</Button>;
 }
 
 function ReferenceMarkup({ html, header = false, plain = false }: { html: string; header?: boolean; plain?: boolean }) {
@@ -75,6 +81,8 @@ function ReferenceMarkup({ html, header = false, plain = false }: { html: string
   const [announcement, setAnnouncement] = useState(2);
   const [expanded, setExpanded] = useState("accordion1-card-body-bprghjla");
   const [notice, setNotice] = useState<string>();
+  const [formMessage, setFormMessage] = useState("");
+  const [captcha, setCaptcha] = useState("7424");
   useEffect(() => {
     if (!notice) { setBrandedNotice(false); return; }
     const close = (event: KeyboardEvent) => { if (event.key === "Escape") setNotice(undefined); };
@@ -92,6 +100,17 @@ function ReferenceMarkup({ html, header = false, plain = false }: { html: string
       const attrs = node.attribs;
       const cls = attrs["class"] ?? "";
       const children = () => domToReact(node.children as DOMNode[], options);
+      if (header && node.name === "a" && attrs["href"] === "page?audio-gallery") return <Link className={cls} to="/audio-gallery">{children()}</Link>;
+      if (attrs["id"] === "change-image") return <Button variant="reference" size="reference" className="lifeos-captcha-refresh" aria-label="Refresh verification code" onClick={() => setCaptcha(String(Math.floor(1000 + Math.random() * 9000)))}>↻</Button>;
+      if (cls.includes("captcha-text")) return <span className={cls}>{captcha}</span>;
+      if (node.name === "input" || node.name === "select" || node.name === "textarea") {
+        const props = attributesToProps(attrs);
+        const name = attrs["name"];
+        const ariaLabel = attrs["aria-label"] ?? attrs["placeholder"] ?? name?.replaceAll("_", " ");
+        if (node.name === "input") return <input {...props} aria-label={ariaLabel} defaultValue={attrs["value"]} value={undefined} />;
+        if (node.name === "select") return <select {...props} aria-label={ariaLabel}>{children()}</select>;
+        return <textarea {...props} aria-label={ariaLabel}>{children()}</textarea>;
+      }
       if (node.name === "script" || node.name === "style") return <></>;
       const limit = header ? undefined : collectionLimit(node);
       if (limit && collectionGroups(node).length > limit) return <CompactCollection node={node} options={options} limit={limit} />;
@@ -118,7 +137,14 @@ function ReferenceMarkup({ html, header = false, plain = false }: { html: string
       if (cls === "dropdown-menu") return <div className={`${cls} ${language ? "show" : ""}`}>{children()}</div>;
       if (cls.includes("rd-nav-item")) return <li className={cls.replace(/active/g, "") + (header ? "" : "")}>{children()}</li>;
       if (cls.includes("panel-collapse")) return <div id={attrs["id"]} className={`panel-collapse collapse ${attrs["id"] && panel === attrs["id"] ? "show" : ""}`}>{children()}</div>;
-      if (node.name === "form" && (cls.includes("contactForm") || cls.includes("registerForm"))) return <form className={cls} onSubmit={e => e.preventDefault()}>{children()}</form>;
+      if (node.name === "form" && (cls.includes("contactForm") || cls.includes("registerForm"))) return <form className={cls} onSubmit={e => {
+        e.preventDefault();
+        const data = new FormData(e.currentTarget);
+        if (cls.includes("registerForm") && data.get("captcha_no") !== captcha) { setFormMessage("The verification code does not match. Please try again."); return; }
+        const lines = Array.from(data.entries()).filter(([key]) => !["lan", "captcha_no"].includes(key)).map(([key, value]) => `${key.replaceAll("_", " ")}: ${value}`).join("\n");
+        window.location.href = `mailto:info@lifeosbd.com?subject=${encodeURIComponent(cls.includes("contactForm") ? "Life OS contact enquiry" : "Life OS joining enquiry")}&body=${encodeURIComponent(lines)}`;
+        setFormMessage("Your email draft is ready. Send it from your email app to complete your enquiry.");
+      }}>{children()}{formMessage && <p className="lifeos-form-message" role="status">{formMessage}</p>}</form>;
       if (node.name === "form") return <form className="reference-search" action="#" method="post">{children()}</form>;
       if (cls.includes("carousel-item")) {
         const siblings = node.parent?.children.filter(n => n instanceof Element && n.attribs["class"]?.includes("carousel-item")) ?? [];
@@ -147,7 +173,7 @@ function ReferenceMarkup({ html, header = false, plain = false }: { html: string
       return undefined;
     },
   };
-  return <>{parse(parsed, options)}{notice && <div className="reference-modal" role="dialog" aria-label="Notice" onClick={() => setNotice(undefined)}><div className="reference-modal-body" onClick={event => event.stopPropagation()}><Button variant="reference" className="close" aria-label="Close notice" onClick={() => { setNotice(undefined); setBrandedNotice(false); }}>×</Button>{brandedNotice || /tile-events-/.test(notice) ? <BrandedPhoto src={notice} alt="Life OS event photo" viewer /> : <img src={notice} alt="Notice" />}</div></div>}</>;
+  return <>{parse(parsed, options)}{notice && <div className="reference-modal" role="dialog" aria-modal="true" aria-label="Life OS photo" onClick={() => setNotice(undefined)}><div className="reference-modal-body" onClick={event => event.stopPropagation()}><Button variant="reference" className="close" aria-label="Close notice" onClick={() => { setNotice(undefined); setBrandedNotice(false); }}>×</Button><BrandedPhoto src={notice} alt={brandedNotice ? "Life OS photo" : "Life OS gallery image"} viewer /></div></div>}</>;
 }
 
 function Banner({ page }: { page: ReferencePage }) {
@@ -159,5 +185,5 @@ function Banner({ page }: { page: ReferencePage }) {
 export function ReferenceSite({ page, content, html }: { page: ReferencePage; content?: React.ReactNode; html?: string }) {
   const product = ["triple-stemcell-h2o", "double-stemcell", "crystal-cell"].includes(page);
   const about = ["about", "founder", "management", "scientists", "business-collaboration", "business-opportunity", "awards", "milestones"].includes(page);
-  return <div className={`reference-site reference-${page} ${about ? "lifeos-about-page" : ""} ${product ? "reference-product" : ""}`}><ReferenceMarkup html={reference.header} header />{!product && <Banner key={page} page={page} />}<main>{content ?? <ReferenceMarkup key={page} html={html ?? aboutPresentation(page, reference.pages[page].html)} />}</main><ReferenceMarkup html={reference.footer} plain /><Button variant="reference" size="reference" className="ui-to-top fa fa-arrow-up active" aria-label="Back to top" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} /></div>;
+  return <div className={`reference-site reference-${page} ${about ? "lifeos-about-page" : ""} ${product ? "reference-product" : ""}`}><ReferenceMarkup html={reference.header} header />{!product && <Banner key={page} page={page} />}<main>{content ?? <ReferenceMarkup key={page} html={html ?? supportPresentation(page, aboutPresentation(page, reference.pages[page].html))} />}</main><ReferenceMarkup html={reference.footer} plain /><Button variant="reference" size="reference" className="ui-to-top fa fa-arrow-up active" aria-label="Back to top" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} /></div>;
 }
