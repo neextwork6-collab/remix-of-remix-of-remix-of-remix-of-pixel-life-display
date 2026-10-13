@@ -187,3 +187,23 @@
 .reference-site .reference-modal-body{position:relative;padding:44px 16px 16px;width:min(100%,1000px)}
 .reference-modal-body>.close{position:absolute;top:8px;right:12px;min-width:32px;min-height:32px;z-index:3;color:var(--foreground)}
 .reference-news-events .events>div:has(>.col-md-4){display:contents}
+
+/* A quiet, brand-coloured band with unframed benefits. */
+.reference-home .lifeos-benefits{position:relative;background:var(--benefits-background);background-image:linear-gradient(115deg,transparent 0 38%,var(--benefits-band) 38% 51%,transparent 51%);padding:64px 0}
+.reference-home .lifeos-benefits .row{align-items:center;row-gap:28px}
+.reference-home .lifeos-benefits h4{color:var(--benefits-text);font-size:16px}
+.reference-home .lifeos-benefits h2{color:var(--benefits-heading);margin-top:12px}
+.reference-home .lifeos-benefits .lifeos-benefits-details{background:transparent!important;padding:0 24px 0 36px;border-left:2px solid var(--benefits-line);border-radius:0}
+.reference-home .lifeos-benefits .card{background:transparent;border:0;box-shadow:none;margin:0;padding:0}
+.reference-home .lifeos-benefits .card+.card{margin-top:22px;padding-top:22px;border-top:1px solid var(--benefits-line)}
+.reference-home .lifeos-benefits .card-header{background:transparent;padding:0;color:var(--benefits-heading);font-size:17px;line-height:1.5;font-weight:700}
+.reference-home .lifeos-benefits .card-body{padding:10px 0 0;color:var(--benefits-text);font-size:14px;line-height:1.8}
+.reference-home .lifeos-benefits .card-body p{margin:0}
+.reference-home .lifeos-news{padding:44px 0 40px}
+.reference-home .lifeos-news>.container>.row{row-gap:28px;margin-top:28px}
+.reference-home .lifeos-news .lifeos-photo{aspect-ratio:4/3;border-radius:4px}
+.reference-home .lifeos-news .lifeos-photo>.lifeos-photo-image{height:100%;margin:0;object-fit:cover}
+.reference-home .lifeos-news .post-creative-title{letter-spacing:0}
+.reference-home .lifeos-news .lifeos-news-more{margin:28px 0 0;text-align:center}
+.reference-home .lifeos-news-more .button{min-height:44px;padding:12px 28px;font-size:14px}
+@media(max-width:767px){.reference-home .lifeos-benefits{padding:36px 0;background-image:none}.reference-home .lifeos-benefits .lifeos-benefits-details{padding:0 15px;border-left:0}.reference-home .lifeos-benefits h2{font-size:32px}.reference-home .lifeos-news{padding:36px 0}.reference-home .lifeos-news>.container>.row{margin-top:24px}}

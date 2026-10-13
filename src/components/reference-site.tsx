@@ -52,7 +52,7 @@ function CompactCollection({ node, options, limit }: { node: Element; options: H
 }
 
 function BrandedPhoto({ src, alt, viewer = false, onOpen }: { src: string; alt: string; viewer?: boolean; onOpen?: () => void }) {
-  const image = <><img className="lifeos-photo-image" src={src} alt={alt} loading={viewer ? "eager" : "lazy"} decoding="async" /><img className="lifeos-photo-logo" src={logoPointer.url} alt="Life OS" aria-hidden="true" /></>;
+  const image = <><img className="lifeos-photo-image" src={src} alt={alt} loading="eager" decoding="async" /><img className="lifeos-photo-logo" src={logoPointer.url} alt="Life OS" aria-hidden="true" /></>;
   return viewer ? <span className="lifeos-photo lifeos-photo-viewer">{image}</span> : <Button variant="reference" size="reference" className="lifeos-photo lifeos-photo-action" aria-label={`View ${alt}`} onClick={event => { event.preventDefault(); event.stopPropagation(); onOpen?.(); }}>{image}</Button>;
 }
 
