@@ -1,0 +1,11 @@
+{
+  "source": "https://github.com/neextwork1-dotcom/remix-of-remix-of-remix-of-remix-of-remix-of-pixel-perfect-studio",
+  "capabilities": [
+    {"capability":"code and routes","source":"TanStack Start content website","outcome":"migrate","status":"in_progress","next_action":"Copy all content pages and verify navigation"},
+    {"capability":"photos and logo","source":"bundled images","outcome":"migrate","status":"in_progress","next_action":"Upload assets and add transparent top-right logo layers"},
+    {"capability":"schema and records","source":"static bundled content; no database call sites","outcome":"not_applicable","status":"verified","next_action":null},
+    {"capability":"auth identities and authorization","source":"no working local authentication; external member link and display-only login form","outcome":"preserve source behavior","status":"pending_verification","next_action":"Verify local login page and preserve existing external destinations"},
+    {"capability":"external providers, public endpoints, callbacks, webhooks, schedules, secrets","source":"external links and video embeds only; no provider API call sites","outcome":"preserve","status":"pending_verification","next_action":"Inspect retained external links"},
+    {"capability":"cutover","source":"unpublished destination","outcome":"pending","status":"pending","next_action":"Publish when requested by user"}
+  ]
+}
