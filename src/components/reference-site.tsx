@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import parse, { attributesToProps, domToReact, Element, type DOMNode, type HTMLReactParserOptions } from "html-react-parser";
 import { Button } from "@/components/ui/button";
+import { ChevronDown, Menu, X } from "lucide-react";
 import reference from "@/lib/reference-pages.json";
 import { collectionLimit, collectionGroups } from "@/lib/content-density";
 import { serviceImage } from "@/lib/service-media";
@@ -43,6 +44,8 @@ const localPages = { index: "/", "page?about": "/about", "page?about-founder": "
 
 export function pageHead(page: ReferencePage) {
   const overrides: Partial<Record<ReferencePage, [string, string]>> = {
+    contact: ["Contact Us | Life OS BD", "Contact the Life OS BD team for service enquiries, support and business collaboration."],
+    "business-center": ["Business Centers | Life OS BD", "Explore Life OS business center locations across Bangladesh and contact the team before visiting."],
     "faq-general": ["General FAQ | Life OS BD", "Answers to common Life OS account, support and registration questions."],
     "faq-product": ["Services FAQ | Life OS BD", "Explore Life OS service availability, digital identity and support."],
     "faq-return-goods": ["Returns & Refunds FAQ | Life OS BD", "Guidance on reporting order issues and requesting returns or refunds."],
@@ -76,6 +79,13 @@ function ReferenceMarkup({ html, header = false, plain = false }: { html: string
   const branded = (src?: string, c = "") => !header && !plain && !!src && (/tile-events-/.test(src) || /img-responsive/.test(c));
   const [brandedNotice, setBrandedNotice] = useState(false);
   const [menu, setMenu] = useState(false);
+  const [submenu, setSubmenu] = useState("");
+  useEffect(() => {
+    if (!menu) return;
+    const close = (event: KeyboardEvent) => { if (event.key === "Escape") setMenu(false); };
+    document.addEventListener("keydown", close);
+    return () => document.removeEventListener("keydown", close);
+  }, [menu]);
   const [language, setLanguage] = useState(false);
   const [hidden, setHidden] = useState<number[]>([]);
   const [announcement, setAnnouncement] = useState(2);
@@ -131,11 +141,16 @@ function ReferenceMarkup({ html, header = false, plain = false }: { html: string
       if (cls.includes("tab-pane")) return <div id={attrs["id"]} role="tabpanel" className={`tab-pane fade ${tab === "#" + attrs["id"] ? "show active" : ""}`}>{children()}</div>;
       if (node.name === "button") {
         const close = cls.includes("close");
+        if (cls.includes("rd-navbar-toggle")) return <Button variant="reference" size="reference" className={`${cls} ${menu ? "active" : ""}`} aria-label={menu ? "Close navigation" : "Open navigation"} aria-expanded={menu} aria-controls="lifeos-navigation" onClick={() => setMenu(!menu)}>{menu ? <X size={22} /> : <Menu size={22} />}</Button>;
         return <Button variant="reference" size="reference" className={cls} type={attrs["type"] === "submit" ? "submit" : "button"} aria-label={attrs["aria-label"]} onClick={close ? (event) => { const el = event.currentTarget.closest(".alert"); if (el) (el as HTMLElement).hidden = true; setHidden([...hidden]); } : cls.includes("rd-navbar-toggle") ? () => setMenu(!menu) : cls.includes("dropdown-toggle") ? () => setLanguage(!language) : undefined}>{children()}</Button>;
       }
-      if (cls.includes("rd-navbar-nav-wrap")) return <div className={`${cls} ${menu ? "mobile-open" : ""}`}>{children()}</div>;
+      if (cls.includes("rd-navbar-nav-wrap")) return <>{menu && <Button variant="reference" size="reference" className="lifeos-menu-backdrop" aria-label="Dismiss navigation" onClick={() => setMenu(false)} />}<div id="lifeos-navigation" className={`${cls} ${menu ? "mobile-open" : ""}`}>{children()}</div></>;
       if (cls === "dropdown-menu") return <div className={`${cls} ${language ? "show" : ""}`}>{children()}</div>;
-      if (cls.includes("rd-nav-item")) return <li className={cls.replace(/active/g, "") + (header ? "" : "")}>{children()}</li>;
+      if (cls.includes("rd-nav-item")) {
+        const link = node.children.find(child => child instanceof Element && child.name === "a");
+        const key = link instanceof Element ? link.children.filter(child => child.type === "text").map(child => "data" in child ? child.data : "").join("").trim() : "";
+        return <li className={`${cls.replace(/active/g, "")} ${submenu === key ? "lifeos-submenu-open" : ""}`}>{children()}</li>;
+      }
       if (cls.includes("panel-collapse")) return <div id={attrs["id"]} className={`panel-collapse collapse ${attrs["id"] && panel === attrs["id"] ? "show" : ""}`}>{children()}</div>;
       if (node.name === "form" && (cls.includes("contactForm") || cls.includes("registerForm"))) return <form className={cls} onSubmit={e => {
         e.preventDefault();
@@ -158,13 +173,19 @@ function ReferenceMarkup({ html, header = false, plain = false }: { html: string
         const eventPhoto = (nodes: DOMNode[]): boolean => nodes.some(child => child instanceof Element && (child.name === "img" && /tile-events-/.test(child.attribs["src"] ?? "") || eventPhoto(child.children as DOMNode[])));
         if (eventPhoto(node.children as DOMNode[])) return <div className={cls}>{children()}</div>;
         const href = attrs["href"] ?? "#";
+        if (header && cls.includes("rd-nav-link") && node.parent instanceof Element && node.parent.children.some(child => child instanceof Element && child.attribs["class"]?.includes("rd-menu"))) {
+          const key = node.children.filter(child => child.type === "text").map(child => "data" in child ? child.data : "").join("").trim();
+          return <Button variant="reference" size="reference" className={`${cls} lifeos-submenu-toggle`} aria-expanded={submenu === key} onClick={() => setSubmenu(submenu === key ? "" : key)}>{children()}<ChevronDown size={15} aria-hidden="true" /></Button>;
+        }
+        if (header && cls === "brand") return <Link className={cls} to="/">{children()}</Link>;
+        if (href === "#" && node.children.some(child => child.type === "text" && "data" in child && /read\s*more/i.test(child.data))) return <Link className={cls} to="/news-events">{children()}</Link>;
         if (cls.includes("cbp-singlePage")) {
           const findImage = (nodes: DOMNode[]): Element | undefined => { for (const child of nodes) { if (child instanceof Element) { if (child.name === "img") return child; const found = findImage(child.children as DOMNode[]); if (found) return found; } } return undefined; };
           const image = findImage(node.children as DOMNode[]) ?? (node.parent instanceof Element ? findImage(node.parent.children as DOMNode[]) : undefined);
           return <a href={image?.attribs["src"] ?? href} className={cls} onClick={e => { if (image) { e.preventDefault(); setNotice(image.attribs["src"]); } }}>{children()}</a>;
         }
         if (href.startsWith("#collapse")) { const id = href.slice(1); return <a href={href} className={`${cls} ${panel === id ? "" : "collapsed"}`} aria-expanded={panel === id} onClick={e => { e.preventDefault(); setPanel(panel === id ? "" : id); }}>{children()}</a>; }
-        if (href in localPages) return <Link className={cls} to={localPages[href as keyof typeof localPages]}>{children()}</Link>;
+        if (href in localPages) return <Link className={cls} to={localPages[href as keyof typeof localPages]} onClick={() => setMenu(false)}>{children()}</Link>;
         if (attrs["data-target"]?.startsWith(".annoucement")) return <a href="#" className={cls} onClick={e => { e.preventDefault(); const find = (ns: DOMNode[]): Element | undefined => { for (const n of ns) { if (n instanceof Element) { if (n.name === "img") return n; const r = find(n.children as DOMNode[]); if (r) return r; } } return undefined; }; const img = find(node.children as DOMNode[]); if (img) setNotice(img.attribs["src"]); }}>{children()}</a>;
         if (cls.includes("carousel-control")) return <Button variant="reference" size="reference" className={cls} aria-label={cls.includes("prev") ? "Previous announcement" : "Next announcement"} onClick={() => setAnnouncement((announcement + (cls.includes("prev") ? 9 : 1)) % 10)}>{children()}</Button>;
         if (href.startsWith("#accordion1")) return <Button variant="reference" size="reference" className={expanded === href.slice(1) ? "" : "collapsed"} aria-expanded={expanded === href.slice(1)} onClick={() => setExpanded(expanded === href.slice(1) ? "" : href.slice(1))}>{children()}</Button>;
