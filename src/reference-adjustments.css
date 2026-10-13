@@ -216,3 +216,10 @@
 .reference-home .lifeos-news .lifeos-news-more{margin:28px 0 0;text-align:center}
 .reference-home .lifeos-news-more .button{min-height:44px;padding:12px 28px;font-size:14px}
 @media(max-width:767px){.reference-home .lifeos-benefits{padding:36px 0;background-image:none}.reference-home .lifeos-benefits .lifeos-benefits-details{padding:0 15px;border-left:0}.reference-home .lifeos-benefits h2{font-size:32px}.reference-home .lifeos-news{padding:36px 0}.reference-home .lifeos-news>.container>.row{margin-top:24px}}
+.reference-site ul.tick{list-style:none;padding-left:0}
+.reference-site ul.tick>li{position:relative;padding-left:32px;margin-bottom:10px;line-height:1.8}
+.reference-site ul.tick>li::before{content:"";position:absolute;left:0;top:.35em;width:20px;height:20px;border-radius:50%;background:var(--primary);font-family:inherit;-webkit-mask:none}
+.reference-site ul.tick>li::after{content:"";position:absolute;left:7px;top:calc(.35em + 4px);width:6px;height:10px;border:solid var(--primary-foreground);border-width:0 2px 2px 0;transform:rotate(45deg)}
+@media(min-width:768px){.reference-site ul.tick{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:32px}}
+.lifeos-about-page main img{max-width:100%;height:auto}
+.lifeos-about-page main :is(table,iframe,video){max-width:100%}
