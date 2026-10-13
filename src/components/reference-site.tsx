@@ -52,12 +52,14 @@ function CompactCollection({ node, options, limit }: { node: Element; options: H
   return <><Tag id={id} className={node.attribs["class"]}>{domToReact((all ? groups : groups.slice(0, limit)).flat(), options)}</Tag>{groups.length > limit && <div className="reference-collection-control"><Button variant="reference" size="reference" className="button button-primary" aria-expanded={all} onClick={() => setAll(!all)}>{all ? "Show less" : `View all (${groups.length})`}</Button></div>}</>;
 }
 
-function BrandedPhoto({ src, alt, viewer = false, onOpen }: { src: string; alt: string; viewer?: boolean; onOpen?: () => void }) {
-  const image = <><img className="lifeos-photo-image" src={src} alt={alt} loading="eager" decoding="async" /><img className="lifeos-photo-logo" src={logoPointer.url} alt="Life OS" aria-hidden="true" /></>;
+function BrandedPhoto({ src, alt, viewer = false, onOpen, className = "" }: { src: string; alt: string; viewer?: boolean; onOpen?: () => void; className?: string }) {
+  const image = <><img className={`lifeos-photo-image ${viewer ? "" : className.replace("img-responsive", "")}`.trim()} src={src} alt={alt} loading="eager" decoding="async" /><img className="lifeos-photo-logo" src={logoPointer.url} alt="Life OS" aria-hidden="true" /></>;
   return viewer ? <span className="lifeos-photo lifeos-photo-viewer">{image}</span> : <Button variant="reference" size="reference" className="lifeos-photo lifeos-photo-action" aria-label={`View ${alt}`} onClick={event => { event.preventDefault(); event.stopPropagation(); onOpen?.(); }}>{image}</Button>;
 }
 
-function ReferenceMarkup({ html, header = false }: { html: string; header?: boolean }) {
+function ReferenceMarkup({ html, header = false, plain = false }: { html: string; header?: boolean; plain?: boolean }) {
+  const branded = (src?: string, c = "") => !header && !plain && !!src && (/tile-events-/.test(src) || /img-responsive/.test(c));
+  const [brandedNotice, setBrandedNotice] = useState(false);
   const [menu, setMenu] = useState(false);
   const [language, setLanguage] = useState(false);
   const [hidden, setHidden] = useState<number[]>([]);
@@ -86,7 +88,7 @@ function ReferenceMarkup({ html, header = false }: { html: string; header?: bool
       if (limit && collectionGroups(node).length > limit) return <CompactCollection node={node} options={options} limit={limit} />;
       if (node.name === "img") {
         const imageSrc = attrs["src"];
-        if (imageSrc && /tile-events-/.test(imageSrc)) return <BrandedPhoto src={imageSrc} alt={attrs["alt"] ?? "Life OS event"} onOpen={() => setNotice(imageSrc)} />;
+        if (imageSrc && branded(imageSrc, cls)) return <BrandedPhoto src={imageSrc} alt={attrs["alt"] ?? "Life OS photo"} className={cls} onOpen={() => { setBrandedNotice(true); setNotice(imageSrc); }} />;
         const service = /\/service-\d{2}[.-]/.test(attrs["src"] ?? "");
         const px = (v?: string) => v && /^\d+$/.test(v) ? Number(v) : undefined;
         return <img {...attributesToProps(attrs)} className={`${cls}${service ? " reference-service-image" : ""}`} width={service ? 1920 : px(attrs["width"])} height={service ? 1080 : px(attrs["height"])} alt={attrs["alt"] ?? ""} loading="lazy" decoding="async" />;
@@ -135,7 +137,7 @@ function ReferenceMarkup({ html, header = false }: { html: string; header?: bool
       return undefined;
     },
   };
-  return <>{parse(parsed, options)}{notice && <div className="reference-modal" role="dialog" aria-label="Notice" onClick={() => setNotice(undefined)}><div className="reference-modal-body" onClick={event => event.stopPropagation()}><Button variant="reference" className="close" aria-label="Close notice" onClick={() => setNotice(undefined)}>×</Button>{/tile-events-/.test(notice) ? <BrandedPhoto src={notice} alt="Life OS event photo" viewer /> : <img src={notice} alt="Notice" />}</div></div>}</>;
+  return <>{parse(parsed, options)}{notice && <div className="reference-modal" role="dialog" aria-label="Notice" onClick={() => setNotice(undefined)}><div className="reference-modal-body" onClick={event => event.stopPropagation()}><Button variant="reference" className="close" aria-label="Close notice" onClick={() => { setNotice(undefined); setBrandedNotice(false); }}>×</Button>{brandedNotice || /tile-events-/.test(notice) ? <BrandedPhoto src={notice} alt="Life OS event photo" viewer /> : <img src={notice} alt="Notice" />}</div></div>}</>;
 }
 
 function Banner({ page }: { page: ReferencePage }) {
@@ -147,5 +149,5 @@ function Banner({ page }: { page: ReferencePage }) {
 export function ReferenceSite({ page, content, html }: { page: ReferencePage; content?: React.ReactNode; html?: string }) {
   const product = ["triple-stemcell-h2o", "double-stemcell", "crystal-cell"].includes(page);
   const about = ["about", "founder", "management", "scientists", "business-collaboration", "business-opportunity", "awards", "milestones"].includes(page);
-  return <div className={`reference-site reference-${page} ${about ? "lifeos-about-page" : ""} ${product ? "reference-product" : ""}`}><ReferenceMarkup html={reference.header} header />{!product && <Banner key={page} page={page} />}<main>{content ?? <ReferenceMarkup key={page} html={html ?? aboutPresentation(page, reference.pages[page].html)} />}</main><ReferenceMarkup html={reference.footer} /><Button variant="reference" size="reference" className="ui-to-top fa fa-arrow-up active" aria-label="Back to top" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} /></div>;
+  return <div className={`reference-site reference-${page} ${about ? "lifeos-about-page" : ""} ${product ? "reference-product" : ""}`}><ReferenceMarkup html={reference.header} header />{!product && <Banner key={page} page={page} />}<main>{content ?? <ReferenceMarkup key={page} html={html ?? aboutPresentation(page, reference.pages[page].html)} />}</main><ReferenceMarkup html={reference.footer} plain /><Button variant="reference" size="reference" className="ui-to-top fa fa-arrow-up active" aria-label="Back to top" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} /></div>;
 }
