@@ -18,3 +18,8 @@
 - [ ] Refine FAQ, Contact Us and Join Us presentation and English content.
 - [ ] Generate suitable branded Contact Us and Join Us photographs.
 - [ ] Verify requested pages, media controls and responsive layouts.
+
+# Whole-site quality check
+- [ ] Test every public page across mobile, tablet and desktop widths; repair observed layout and interaction bugs.
+- [ ] Verify image viewers, audio playback, video controls, menus, FAQs and enquiry forms.
+- [ ] Run regression tests and record remaining external limitations.
