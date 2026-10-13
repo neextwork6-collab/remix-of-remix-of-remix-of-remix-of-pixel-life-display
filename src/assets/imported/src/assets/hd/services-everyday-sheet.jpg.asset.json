@@ -1,11 +1,11 @@
 {
-  "version": 1,
   "asset_id": "1cb01c51-cdbe-43c7-b9ee-caca47c29939",
-  "project_id": "2974feda-a465-4be9-aab6-43d066dc5da6",
-  "url": "/__l5e/assets-v1/1cb01c51-cdbe-43c7-b9ee-caca47c29939/services-everyday-sheet.jpg",
-  "r2_key": "a/v1/2974feda-a465-4be9-aab6-43d066dc5da6/1cb01c51-cdbe-43c7-b9ee-caca47c29939/services-everyday-sheet.jpg",
-  "original_filename": "services-everyday-sheet.jpg",
-  "size": 432743,
   "content_type": "image/jpeg",
-  "created_at": "2026-10-13T07:43:28Z"
+  "created_at": "2026-10-13T07:43:28Z",
+  "original_filename": "services-everyday-sheet.jpg",
+  "project_id": "a21de0c6-73c8-49a7-bc80-f26dcd0d152c",
+  "r2_key": "a/v1/a21de0c6-73c8-49a7-bc80-f26dcd0d152c/1cb01c51-cdbe-43c7-b9ee-caca47c29939/services-everyday-sheet.jpg",
+  "size": 432743,
+  "url": "/__l5e/assets-v1/1cb01c51-cdbe-43c7-b9ee-caca47c29939/services-everyday-sheet.jpg",
+  "version": 1
 }

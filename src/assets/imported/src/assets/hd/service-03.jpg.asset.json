@@ -1,11 +1,11 @@
 {
-  "version": 1,
   "asset_id": "51bc4fe2-38d7-4df6-9b72-e559669f250b",
-  "project_id": "2974feda-a465-4be9-aab6-43d066dc5da6",
-  "url": "/__l5e/assets-v1/51bc4fe2-38d7-4df6-9b72-e559669f250b/service-03.jpg",
-  "r2_key": "a/v1/2974feda-a465-4be9-aab6-43d066dc5da6/51bc4fe2-38d7-4df6-9b72-e559669f250b/service-03.jpg",
-  "original_filename": "service-03.jpg",
-  "size": 1314177,
   "content_type": "image/png",
-  "created_at": "2026-10-13T07:43:13Z"
+  "created_at": "2026-10-13T07:43:13Z",
+  "original_filename": "service-03.jpg",
+  "project_id": "a21de0c6-73c8-49a7-bc80-f26dcd0d152c",
+  "r2_key": "a/v1/a21de0c6-73c8-49a7-bc80-f26dcd0d152c/51bc4fe2-38d7-4df6-9b72-e559669f250b/service-03.jpg",
+  "size": 1314177,
+  "url": "/__l5e/assets-v1/51bc4fe2-38d7-4df6-9b72-e559669f250b/service-03.jpg",
+  "version": 1
 }
