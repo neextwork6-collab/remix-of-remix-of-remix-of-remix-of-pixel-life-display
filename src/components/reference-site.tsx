@@ -1,5 +1,5 @@
 import logoPointer from "@/assets/life-os-logo.png.asset.json";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import parse, { attributesToProps, domToReact, Element, type DOMNode, type HTMLReactParserOptions } from "html-react-parser";
 import { Button } from "@/components/ui/button";
@@ -51,6 +51,11 @@ function CompactCollection({ node, options, limit }: { node: Element; options: H
   return <><Tag id={id} className={node.attribs["class"]}>{domToReact((all ? groups : groups.slice(0, limit)).flat(), options)}</Tag>{groups.length > limit && <div className="reference-collection-control"><Button variant="reference" size="reference" className="button button-primary" aria-expanded={all} onClick={() => setAll(!all)}>{all ? "Show less" : `View all (${groups.length})`}</Button></div>}</>;
 }
 
+function BrandedPhoto({ src, alt, viewer = false, onOpen }: { src: string; alt: string; viewer?: boolean; onOpen?: () => void }) {
+  const image = <><img className="lifeos-photo-image" src={src} alt={alt} loading={viewer ? "eager" : "lazy"} decoding="async" /><img className="lifeos-photo-logo" src={logoPointer.url} alt="Life OS" aria-hidden="true" /></>;
+  return viewer ? <span className="lifeos-photo lifeos-photo-viewer">{image}</span> : <Button variant="reference" size="reference" className="lifeos-photo lifeos-photo-action" aria-label={`View ${alt}`} onClick={event => { event.preventDefault(); event.stopPropagation(); onOpen?.(); }}>{image}</Button>;
+}
+
 function ReferenceMarkup({ html, header = false }: { html: string; header?: boolean }) {
   const [menu, setMenu] = useState(false);
   const [language, setLanguage] = useState(false);
@@ -58,6 +63,14 @@ function ReferenceMarkup({ html, header = false }: { html: string; header?: bool
   const [announcement, setAnnouncement] = useState(2);
   const [expanded, setExpanded] = useState("accordion1-card-body-bprghjla");
   const [notice, setNotice] = useState<string>();
+  useEffect(() => {
+    if (!notice) return;
+    const close = (event: KeyboardEvent) => { if (event.key === "Escape") setNotice(undefined); };
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    document.addEventListener("keydown", close);
+    return () => { document.body.style.overflow = previous; document.removeEventListener("keydown", close); };
+  }, [notice]);
   const [tab, setTab] = useState("#home");
   const [panel, setPanel] = useState("collapseOne");
   const parsed = resolveMedia(html);
@@ -71,6 +84,7 @@ function ReferenceMarkup({ html, header = false }: { html: string; header?: bool
       const limit = header ? undefined : collectionLimit(node);
       if (limit && collectionGroups(node).length > limit) return <CompactCollection node={node} options={options} limit={limit} />;
       if (node.name === "img") {
+        if (/tile-events-/.test(attrs["src"] ?? "")) return <BrandedPhoto src={attrs["src"]} alt={attrs["alt"] ?? "Life OS event"} onOpen={() => setNotice(attrs["src"])} />;
         const service = /\/service-\d{2}[.-]/.test(attrs["src"] ?? "");
         const px = (v?: string) => v && /^\d+$/.test(v) ? Number(v) : undefined;
         return <img {...attributesToProps(attrs)} className={`${cls}${service ? " reference-service-image" : ""}`} width={service ? 1920 : px(attrs["width"])} height={service ? 1080 : px(attrs["height"])} alt={attrs["alt"] ?? ""} loading="lazy" decoding="async" />;
@@ -101,6 +115,8 @@ function ReferenceMarkup({ html, header = false }: { html: string; header?: bool
       if (cls.includes("modal fade")) return <></>;
       if (cls.includes("collapse") && attrs["id"]?.startsWith("accordion1-card-body")) return <div id={attrs["id"]} className={`collapse ${expanded === attrs["id"] ? "show" : ""}`}>{children()}</div>;
       if (node.name === "a") {
+        const eventPhoto = (nodes: DOMNode[]): boolean => nodes.some(child => child instanceof Element && (child.name === "img" && /tile-events-/.test(child.attribs["src"] ?? "") || eventPhoto(child.children as DOMNode[])));
+        if (eventPhoto(node.children as DOMNode[])) return <div className={cls}>{children()}</div>;
         const href = attrs["href"] ?? "#";
         if (cls.includes("cbp-singlePage")) {
           const findImage = (nodes: DOMNode[]): Element | undefined => { for (const child of nodes) { if (child instanceof Element) { if (child.name === "img") return child; const found = findImage(child.children as DOMNode[]); if (found) return found; } } return undefined; };
@@ -117,7 +133,7 @@ function ReferenceMarkup({ html, header = false }: { html: string; header?: bool
       return undefined;
     },
   };
-  return <>{parse(parsed, options)}{notice && <div className="reference-modal" role="dialog" aria-label="Notice" onClick={() => setNotice(undefined)}><div className="reference-modal-body"><Button variant="reference" className="close" aria-label="Close notice" onClick={() => setNotice(undefined)}>×</Button><img src={notice} alt="Notice" /></div></div>}</>;
+  return <>{parse(parsed, options)}{notice && <div className="reference-modal" role="dialog" aria-label="Notice" onClick={() => setNotice(undefined)}><div className="reference-modal-body" onClick={event => event.stopPropagation()}><Button variant="reference" className="close" aria-label="Close notice" onClick={() => setNotice(undefined)}>×</Button>{/tile-events-/.test(notice) ? <BrandedPhoto src={notice} alt="Life OS event photo" viewer /> : <img src={notice} alt="Notice" />}</div></div>}</>;
 }
 
 function Banner({ page }: { page: ReferencePage }) {
