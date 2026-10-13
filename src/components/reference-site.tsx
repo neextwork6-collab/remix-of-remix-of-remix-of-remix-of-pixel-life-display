@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import reference from "@/lib/reference-pages.json";
 import { collectionLimit, collectionGroups } from "@/lib/content-density";
 import { serviceImage } from "@/lib/service-media";
+import { aboutPresentation } from "@/lib/about-presentation";
 import bannerOnePointer from "@/assets/imported/src/assets/refined/banner-1.jpg.asset.json";
 const bannerOne = bannerOnePointer.url;
 import bannerTwoPointer from "@/assets/imported/src/assets/refined/banner-2.jpg.asset.json";
@@ -145,5 +146,6 @@ function Banner({ page }: { page: ReferencePage }) {
 
 export function ReferenceSite({ page, content, html }: { page: ReferencePage; content?: React.ReactNode; html?: string }) {
   const product = ["triple-stemcell-h2o", "double-stemcell", "crystal-cell"].includes(page);
-  return <div className={`reference-site reference-${page} ${product ? "reference-product" : ""}`}><ReferenceMarkup html={reference.header} header />{!product && <Banner key={page} page={page} />}<main>{content ?? <ReferenceMarkup key={page} html={html ?? reference.pages[page].html} />}</main><ReferenceMarkup html={reference.footer} /><Button variant="reference" size="reference" className="ui-to-top fa fa-arrow-up active" aria-label="Back to top" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} /></div>;
+  const about = ["about", "founder", "management", "scientists", "business-collaboration", "business-opportunity", "awards", "milestones"].includes(page);
+  return <div className={`reference-site reference-${page} ${about ? "lifeos-about-page" : ""} ${product ? "reference-product" : ""}`}><ReferenceMarkup html={reference.header} header />{!product && <Banner key={page} page={page} />}<main>{content ?? <ReferenceMarkup key={page} html={html ?? aboutPresentation(page, reference.pages[page].html)} />}</main><ReferenceMarkup html={reference.footer} /><Button variant="reference" size="reference" className="ui-to-top fa fa-arrow-up active" aria-label="Back to top" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} /></div>;
 }
