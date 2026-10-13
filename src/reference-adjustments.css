@@ -223,3 +223,15 @@
 @media(min-width:768px){.reference-site ul.tick{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:32px}}
 .lifeos-about-page main img{max-width:100%;height:auto}
 .lifeos-about-page main :is(table,iframe,video){max-width:100%}
+
+/* Certificates: show full certificate like Awards */
+.reference-halal-certificates .box { padding: 12px; background: transparent; }
+.reference-halal-certificates img.lifeos-certificate { width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: contain; }
+
+/* Service videos: banner poster + play button, shared logo clip */
+.lifeos-video-poster { position: absolute; inset: 0; display: block; width: 100%; height: 100%; padding: 0; border: 0; background: transparent; cursor: pointer; }
+.lifeos-video-poster img { width: 100%; height: 100%; object-fit: cover; }
+.lifeos-video-play { position: absolute; top: 50%; left: 50%; width: 64px; height: 64px; transform: translate(-50%, -50%); border-radius: 50%; background: var(--primary); box-shadow: 0 6px 20px color-mix(in oklab, var(--foreground) 30%, transparent); transition: transform .2s; }
+.lifeos-video-play::after { content: ""; position: absolute; top: 50%; left: 54%; transform: translate(-50%, -50%); border-style: solid; border-width: 12px 0 12px 20px; border-color: transparent transparent transparent var(--primary-foreground); }
+.lifeos-video-poster:hover .lifeos-video-play { transform: translate(-50%, -50%) scale(1.08); }
+.lifeos-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: var(--background); }
