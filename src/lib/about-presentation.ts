@@ -5,6 +5,11 @@ import expertTwo from "@/assets/lifeos-experts-2.jpg";
 import expertThree from "@/assets/lifeos-experts-3.jpg";
 import finance from "@/assets/lifeos-collaboration-1.jpg";
 import services from "@/assets/lifeos-collaboration-2.jpg";
+import certOne from "@/assets/lifeos-cert-1.jpg";
+import certTwo from "@/assets/lifeos-cert-2.jpg";
+import certThree from "@/assets/lifeos-cert-3.jpg";
+import certFour from "@/assets/lifeos-cert-4.jpg";
+import certFive from "@/assets/lifeos-cert-5.jpg";
 
 // Same markup as the original CEO row so new profiles keep the old element types and image size.
 const leader = (name: string, role: string, image: string, paragraphs: string[]) =>
@@ -33,6 +38,10 @@ export function aboutPresentation(page: string, original: string): string {
   }
   if (page === "business-opportunity") {
     return original.replace(/\u00a0/g, "").replace(/Work from home or caf\u00e9\u2026 wherever!/, "Work from home, a caf\u00e9 or wherever suits you").replace(/You earn what you\u2019re worth/, "Earn according to your effort");
+  }
+  if (page === "halal-certificates") {
+    const certs = [certOne, certTwo, certThree, certFour, certFive];
+    return original.replace(/lifeos-media:\/\/recognition\/3([3-7])/g, (_, n) => certs[Number(n) - 3]).replace(/class="img-fluid"/g, 'class="img-fluid lifeos-certificate"');
   }
   return original;
 }

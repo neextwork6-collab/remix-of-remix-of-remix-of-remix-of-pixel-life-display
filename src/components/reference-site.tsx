@@ -89,6 +89,7 @@ function ReferenceMarkup({ html, header = false, plain = false }: { html: string
       if (node.name === "img") {
         const imageSrc = attrs["src"];
         if (imageSrc && branded(imageSrc, cls)) return <BrandedPhoto src={imageSrc} alt={attrs["alt"] ?? "Life OS photo"} className={cls} onOpen={() => { setBrandedNotice(true); setNotice(imageSrc); }} />;
+        if (imageSrc && cls.includes("reference-video-poster")) return <PosterVideo poster={imageSrc} alt={attrs["alt"] ?? "Life OS video"} />;
         const service = /\/service-\d{2}[.-]/.test(attrs["src"] ?? "");
         const px = (v?: string) => v && /^\d+$/.test(v) ? Number(v) : undefined;
         return <img {...attributesToProps(attrs)} className={`${cls}${service ? " reference-service-image" : ""}`} width={service ? 1920 : px(attrs["width"])} height={service ? 1080 : px(attrs["height"])} alt={attrs["alt"] ?? ""} loading="lazy" decoding="async" />;
