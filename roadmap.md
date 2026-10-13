@@ -20,6 +20,8 @@
 - [ ] Verify requested pages, media controls and responsive layouts.
 
 # Whole-site quality check
+- [ ] Match supplied mobile reference positioning with a compact header, usable side menu and single-column gallery.
+- [ ] Polish both Contact submenu pages (Contact Us and Business Center) within the existing theme.
 - [ ] Test every public page across mobile, tablet and desktop widths; repair observed layout and interaction bugs.
 - [ ] Verify image viewers, audio playback, video controls, menus, FAQs and enquiry forms.
 - [ ] Run regression tests and record remaining external limitations.

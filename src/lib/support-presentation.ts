@@ -4,6 +4,12 @@ import joinImage from "@/assets/lifeos-join-team.jpg";
 const faq = (title: string, groups: [string, string][]) => `<section class="section triangle2 lifeos-support" id="profile"><div class="container"><h2 class="h-bold text-center mb-3">${title}</h2><div class="panel-group">${groups.map(([q, a], i) => `<details class="lifeos-faq" ${i === 0 ? "open" : ""}><summary>${q}</summary><div class="panel-body"><p>${a}</p></div></details>`).join("")}</div></div></section>`;
 
 export function supportPresentation(page: string, html: string): string {
+  if (page === "business-center") return html
+    .replace('id="businesscenter"', 'id="businesscenter" class="lifeos-business-centers"')
+    .replace('<div class="row">', '<p class="lifeos-center-intro text-center">Connect with Life OS across Bangladesh. Contact our team to confirm location details before your visit.</p><div class="row lifeos-center-grid">')
+    .replace(/<p><b>Tel: <\/b>\+880 \(to be updated\)<\/p>/g, '')
+    .replace(/<p><b>Contact Person:<\/b>[\s\S]*?<\/p>/g, '<p>For local contact details, <a href="/contact">contact the Life OS team</a>.</p>')
+    .replace(/(<p><b>Email:<\/b> )([^<\s]+)(<\/p>)/g, '$1<a href="mailto:$2">$2</a>$3');
   if (page === "faq-general") return faq("FAQ — General", [
     ["What is Life OS?", "Life OS brings digital identity and everyday services together in one connected platform for Bangladesh. Explore the Services menu to learn about each offering."],
     ["How can I get started?", "Visit <a href='/join-us'>Join Us</a> to share your interest, or contact the Life OS team for guidance on registration and available services."],
@@ -33,6 +39,8 @@ export function supportPresentation(page: string, html: string): string {
     ["How can I check my request?", "Reply to the original support conversation and include your order or case reference so the team can locate your request."]
   ]);
   if (page === "contact") return html
+    .replace('class="row"', 'class="row lifeos-contact-layout"')
+    .replace(/style="margin-top: 50px"/g, 'class="lifeos-contact-section"')
     .replace('src="lifeos-media://events/59" width="90%"', `src="${contactImage}" width="1200" height="800" class="img-responsive lifeos-support-photo"`)
     .replace('CONNECT', 'Contact Life OS').replace('with us', 'Let’s connect')
     .replace('Give us a call or send us an email if you have any queries.', 'Have a service question or a partnership idea? Our team would be happy to hear from you.')
@@ -43,6 +51,7 @@ export function supportPresentation(page: string, html: string): string {
     .replace('<div id="sendmessage">Your message has been sent. Thank you!</div>', '')
     .replace(/<input ([^>]*name="(?:name|email)"[^>]*)\/>/g, '<input $1 required=""/>')
     .replace('<textarea class="form-control"', '<textarea required="" aria-label="Your message" class="form-control"')
+    .replace('<h2 class="h-bold text-center">Our Branch</h2>', '<h2 class="h-bold text-center">Our Branch</h2>')
     .replace('>Send Message</button>', '>Prepare Email</button>');
   if (page === "join-us") return html
     .replace('<h2 class="h-bold text-center">Join us</h2>', `<h2 class="h-bold text-center">Join Life OS</h2><div class="lifeos-join-intro"><img src="${joinImage}" alt="Life OS community collaboration" width="1200" height="800" class="img-responsive lifeos-support-photo"/><p>Connect with the Life OS community. Share your interest in our services or business opportunities with our team.</p></div>`)
